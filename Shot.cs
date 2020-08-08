@@ -1,4 +1,5 @@
-﻿using System.Windows.Media;
+﻿using System.Windows;
+using System.Windows.Media;
 
 namespace BrickGame {
     class Shot {
@@ -34,7 +35,12 @@ namespace BrickGame {
                     break;
             }
             var tank = Field.GetCollided(point);
-            if (tank != null && !tank.player) {
+            if (tank != null) {
+                if (tank.player) {
+                    MessageBox.Show("Game over");
+                    Field.score = -1;
+                    return false;
+                }
                 tank.Draw(true);
                 Field.score++;
                 Field.tanks.Remove(tank);
@@ -45,8 +51,8 @@ namespace BrickGame {
             return true;
         }
 
-        private void Draw(bool clear = false) {
-            Field.GetRectangle(point).Fill = new SolidColorBrush(clear ? Colors.White : Colors.Black);
+        public void Draw(bool clear = false) {
+            Field.GetRectangle(point).Fill = new SolidColorBrush(clear ? Colors.White : Colors.Blue);
         }
 
         public static Point GetPoint(Tank tank) {

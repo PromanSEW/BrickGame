@@ -22,6 +22,12 @@ namespace BrickGame {
             foreach (var shot in shots) {
                 if (!shot.Move()) bad.Add(shot);
             }
+            if (score == -1) {
+                score = 0;
+                ClearField();
+                tanks.Add(new Tank(new Point(3, 3), Direction.Down, true));
+                return;
+            }
             foreach (var shot in bad) {
                 shots.Remove(shot);
             }
@@ -36,7 +42,7 @@ namespace BrickGame {
                     }
                 }
             }
-            return null; 
+            return null;
         }
 
         public static void CreateField(Canvas canvas) {
@@ -50,8 +56,15 @@ namespace BrickGame {
                     canvas.Children.Add(block);
                 }
             }
-            tanks.Add(new Tank(new Point(3, 4), Direction.Up, true));
+            tanks.Add(new Tank(new Point(3, 3), Direction.Down, true));
             AI.CreateTank();
+        }
+
+        private static void ClearField() {
+            foreach (var tank in tanks) tank.Draw(true);
+            foreach (var shot in shots) shot.Draw(true);
+            tanks.Clear();
+            shots.Clear();
         }
 
         private static Rectangle CreateBlock() => new Rectangle {
